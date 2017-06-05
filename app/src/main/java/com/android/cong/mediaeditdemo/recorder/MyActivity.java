@@ -17,14 +17,15 @@ public class MyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startRecord();
-
+        startAdbShellRecord();
 
     }
 
-    private void startRecord() {
+    /**
+     * 使用adb shell screenrecord命令进行录屏
+     */
+    private void startAdbShellRecord() {
         Intent intent = new Intent(this, AdbShellRecodService.class);
-        intent.putExtra("cmd","screenrecord --time-limit 20 --bit-rate 6000000 /sdcard/demo2.mp4");
         startService(intent);
     }
 }

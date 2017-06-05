@@ -16,6 +16,7 @@ import android.util.Log;
  */
 
 public class AdbShellRecodService extends IntentService {
+    String cmdStr = "screenrecord --time-limit 20 --bit-rate 6000000 /sdcard/demo2.mp4";
 
     public AdbShellRecodService() {
         this("adb");
@@ -37,43 +38,39 @@ public class AdbShellRecodService extends IntentService {
         BufferedReader errorReader = null;
 
         try {
-            if (!TextUtils.isEmpty(intent.getStringExtra("cmd"))) {
-                String cmd = intent.getStringExtra("cmd");
-                // 权限设置，需要root权限为"su",否则为"sh"
-                Process process = Runtime.getRuntime().exec("sh");
-                //获取输出流
-                outs = new DataOutputStream(process.getOutputStream());
-                //将shell命令写入
-                outs.write(cmd.getBytes());
-                outs.writeBytes("\n");
-                outs.writeBytes("exit\n");
+            // 权限设置，需要root权限为"su",否则为"sh"
+            Process process = Runtime.getRuntime().exec("sh");
+            //获取输出流
+            outs = new DataOutputStream(process.getOutputStream());
+            //将shell命令写入
+            outs.write(cmdStr.getBytes());
+            outs.writeBytes("\n");
+            outs.writeBytes("exit\n");
 
-                //提交命令
-                outs.flush();
+            //提交命令
+            outs.flush();
 
-                int exitCode = process.waitFor(); // 执行结果的退出码
-                Log.i("===>xkc", "exitCode=" + exitCode);
+            int exitCode = process.waitFor(); // 执行结果的退出码
+            Log.i("===>xkc", "exitCode=" + exitCode);
 
-                StringBuilder successMsg = new StringBuilder();
-                StringBuilder errorMsg = new StringBuilder();
+            StringBuilder successMsg = new StringBuilder();
+            StringBuilder errorMsg = new StringBuilder();
 
-                successReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            successReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
-                String s;
-                while ((s = successReader.readLine()) != null) {
-                    successMsg.append(s);
-                }
-
-                Log.i("===>xkc", "success msg:" + successMsg);
-
-                while ((s = errorReader.readLine()) != null) {
-                    errorMsg.append(s);
-                }
-
-                Log.i("===>xkc", "error msg:" + errorMsg);
-
+            String s;
+            while ((s = successReader.readLine()) != null) {
+                successMsg.append(s);
             }
+
+            Log.i("===>xkc", "success msg:" + successMsg);
+
+            while ((s = errorReader.readLine()) != null) {
+                errorMsg.append(s);
+            }
+
+            Log.i("===>xkc", "error msg:" + errorMsg);
 
         } catch (IOException e) {
             e.printStackTrace();
