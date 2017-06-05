@@ -21,12 +21,19 @@
 
         <!--视频信息获取-->
         <activity android:name=".mediaretrieve.MediaInfoRetrieveActivity">
+
+        </activity>
+
+
+        <!--录屏-->
+        <activity android:name=".recorder.MyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <service android:name=".recorder.AdbShellRecodService"/>
 
 
     </application>
