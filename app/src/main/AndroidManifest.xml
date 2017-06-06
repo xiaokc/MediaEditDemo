@@ -28,7 +28,7 @@
 
 
         <!--录屏-->
-        <activity android:name=".recorder.MyActivity">
+        <activity android:name=".recorder.AdbShellRecordActivity">
 
         </activity>
         <service android:name=".recorder.AdbShellRecodService"/>

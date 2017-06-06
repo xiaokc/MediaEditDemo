@@ -47,6 +47,7 @@ public class MediaInfoRetrieveActivity extends Activity implements View.OnClickL
     private ExtractVideoFrameThread mThread;
     private MainHandler mHandler;
 
+    private DeviceUtil deviceUtil;
     private final String mVideoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
             .getAbsolutePath() + "/Video/V70602-103441.mp4";
     private final String mOutputFileDirPath = Environment.getExternalStoragePublicDirectory(Environment
@@ -74,7 +75,9 @@ public class MediaInfoRetrieveActivity extends Activity implements View.OnClickL
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 5);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new MultiPictureAdapter(this, DeviceUtil.getScreenWidth(this) / 5);
+        deviceUtil = new DeviceUtil(this);
+
+        mAdapter = new MultiPictureAdapter(this, deviceUtil.getScreenWidth() / 5);
         mRecyclerView.setAdapter(mAdapter);
 
         btnGetInfo.setOnClickListener(this);
@@ -142,7 +145,7 @@ public class MediaInfoRetrieveActivity extends Activity implements View.OnClickL
         long endPosition = Long.valueOf(mVideoInfoUtil.getVideoLength());
         long startPosition = 0;
         int thumbnailsCount = 10;
-        int imgWidth = DeviceUtil.getScreenWidth(this) / 5;
+        int imgWidth = deviceUtil.getScreenWidth() / 5;
         int imgHeight = DeviceUtil.dip2px(this, 55);
         mHandler = new MainHandler(this);
         mThread = new ExtractVideoFrameThread(mVideoPath, mOutputFileDirPath, imgWidth, imgHeight, startPosition,

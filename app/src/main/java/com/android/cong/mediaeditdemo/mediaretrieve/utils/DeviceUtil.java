@@ -9,25 +9,35 @@ import android.view.WindowManager;
  */
 
 public class DeviceUtil {
-    public static int getScreenWidth(Context context) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        wm.getDefaultDisplay().getMetrics(metrics);
-        return metrics.widthPixels;
+    private int screenWidth;
+    private int screenHeight;
+    private int screenDpi;
+    private Context context;
+
+    public DeviceUtil(Context context) {
+        this.context = context;
+        getScreenData();
     }
 
-    public static int getScreenHeight(Context context){
+    public void getScreenData() {
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getMetrics(metrics);
-        return metrics.heightPixels;
+        screenDpi = metrics.densityDpi;
+        screenWidth = metrics.widthPixels;
+        screenHeight = metrics.heightPixels;
+
+    }
+    public  int getScreenWidth() {
+        return screenWidth;
     }
 
-    public static int getScreenDpi(Context context) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        wm.getDefaultDisplay().getMetrics(metrics);
-        return metrics.densityDpi;
+    public  int getScreenHeight(){
+        return screenHeight;
+    }
+
+    public int getScreenDpi() {
+        return screenDpi;
     }
 
     public static int dip2px(Context context, int dip) {

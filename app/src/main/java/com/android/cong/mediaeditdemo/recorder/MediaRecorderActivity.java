@@ -35,6 +35,7 @@ public class MediaRecorderActivity extends Activity {
     private MediaProjectionManager mediaProjectionManager;
     private MediaProjection mediaProjection;
     private MediaRecorderService recorderService;
+    private DeviceUtil deviceUtil;
 
     private final int REQUEST_RECORD = 0x0;
     private final int REQUEST_WRITE_EXTERNAL_STORAGE = 0x1;
@@ -45,6 +46,7 @@ public class MediaRecorderActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_recorder);
         mediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+        deviceUtil = new DeviceUtil(this);
         btnStart = (Button) findViewById(R.id.btn_start);
         btnStart.setEnabled(false);
         btnStart.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +55,7 @@ public class MediaRecorderActivity extends Activity {
                 if (recorderService.isRunning()) {
                     recorderService.stopRecord();
                     btnStart.setText("开始");
-                    Toast.makeText(MediaRecorderActivity.this,"录屏结束",Toast.LENGTH_LONG).show();
+                    Toast.makeText(MediaRecorderActivity.this, "录屏结束", Toast.LENGTH_LONG).show();
                 } else {
                     Intent captureIntent = mediaProjectionManager.createScreenCaptureIntent();
                     startActivityForResult(captureIntent, REQUEST_RECORD);
@@ -92,8 +94,8 @@ public class MediaRecorderActivity extends Activity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             MediaRecorderService.RecordBinder binder = (MediaRecorderService.RecordBinder) service;
             recorderService = binder.getRecordService();
-            recorderService.setConfig(DeviceUtil.getScreenWidth(MediaRecorderActivity.this), DeviceUtil
-                    .getScreenHeight(MediaRecorderActivity.this), DeviceUtil.getScreenDpi(MediaRecorderActivity.this));
+            recorderService.setConfig(deviceUtil.getScreenWidth(),
+                    deviceUtil.getScreenHeight(), deviceUtil.getScreenDpi());
             btnStart.setEnabled(true);
             btnStart.setText(recorderService.isRunning() ? "停止" : "开始");
         }
