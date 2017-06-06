@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -27,13 +29,17 @@
 
         <!--录屏-->
         <activity android:name=".recorder.MyActivity">
+
+        </activity>
+        <service android:name=".recorder.AdbShellRecodService"/>
+        <activity android:name=".recorder.MediaRecorderActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <service android:name=".recorder.AdbShellRecodService"/>
+        <service android:name=".recorder.MediaRecorderService"/>
 
 
     </application>
