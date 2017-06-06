@@ -16,6 +16,20 @@ public class DeviceUtil {
         return metrics.widthPixels;
     }
 
+    public static int getScreenHeight(Context context){
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(metrics);
+        return metrics.heightPixels;
+    }
+
+    public static int getScreenDpi(Context context) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(metrics);
+        return metrics.densityDpi;
+    }
+
     public static int dip2px(Context context, int dip) {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) ((float) dip * scale + 0.5f);
