@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
 
 /**
