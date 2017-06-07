@@ -155,7 +155,7 @@ public class VideoDecoder {
 
             // 剪辑时间到了，跳出
             if ((clipDuration != 0) && ((clipPoint + clipDuration) < presentationTimeUs)) {
-                mediaExtractor.unselectTrack(trackIndex);
+                mediaExtractor.unselectTrack(sourceVTrack);
                 break;
             }
 
@@ -209,7 +209,7 @@ public class VideoDecoder {
 
             // 剪辑时间到了，跳出
             if ((clipDuration != 0) && ((clipPoint + clipDuration) < presentationTimeUs)) {
-                mediaExtractor.unselectTrack(trackIndex);
+                mediaExtractor.unselectTrack(sourceATrack);
                 break;
             }
 
