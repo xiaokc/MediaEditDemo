@@ -106,6 +106,7 @@ public class DecodeActivity extends Activity implements SurfaceHolder.Callback {
                             if (sampleSize < 0) {
                                 Log.i("===>xkc", "inputbuffer buffer_flag_end_of_stream");
                                 decoder.queueInputBuffer(inIndex, 0, 0, 0, MediaCodec.BUFFER_FLAG_END_OF_STREAM);
+                                isEOS = true;
                             } else {
                                 decoder.queueInputBuffer(inIndex, 0, sampleSize, extractor.getSampleTime(), 0);
                                 extractor.advance();
