@@ -161,7 +161,7 @@ public class VideoDecoder {
                     + "sampleFlag=" + sampleFlag + ",sampleSize=" + sampleSize);
 
             // 剪辑时间到了，跳出
-            if ((clipDuration != 0) && ((clipPoint + clipDuration) < presentationTimeUs)) {
+            if ((clipDuration != 0) && (presentationTimeUs > (clipPoint + clipDuration))) {
                 mediaExtractor.unselectTrack(sourceVTrack);
                 break;
             }
@@ -221,7 +221,7 @@ public class VideoDecoder {
                     + ",sampleSize=" + sampleSize);
 
             // 剪辑时间到了，跳出
-            if ((clipDuration != 0) && ((clipPoint + clipDuration) < presentationTimeUs)) {
+            if ((clipDuration != 0) && ( presentationTimeUs > (clipPoint + clipDuration))) {
                 mediaExtractor.unselectTrack(sourceATrack);
                 break;
             }
