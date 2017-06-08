@@ -113,25 +113,31 @@ public class VideoDecoder {
         videoInfo.presentationTimeUs = 0;
 
         // 计算采样（帧）率
-        long videoSampleTime = 0;
+        long videoSampleTime;
+        {
 
-        // 获取源视频相邻帧之间的时间间隔
-        mediaExtractor.readSampleData(inputBuffer, 0);
+            // 获取源视频相邻帧之间的时间间隔
+            mediaExtractor.readSampleData(inputBuffer, 0);
 
-        // 跳过第一个I帧
-        if (mediaExtractor.getSampleFlags() == MediaExtractor.SAMPLE_FLAG_SYNC) {
+            // 跳过第一个I帧
+            if (mediaExtractor.getSampleFlags() == MediaExtractor.SAMPLE_FLAG_SYNC) {
+                mediaExtractor.advance();
+            }
+
+            mediaExtractor.readSampleData(inputBuffer, 0);
+            long firstVideoPTS = mediaExtractor.getSampleTime();
+
             mediaExtractor.advance();
+            mediaExtractor.readSampleData(inputBuffer, 0);
+            long secondPTS = mediaExtractor.getSampleTime();
+            videoSampleTime = Math.abs(secondPTS - firstVideoPTS);
+
+            Log.d("===>xkc", "videSampleTime is:" + videoSampleTime);
         }
 
-        mediaExtractor.readSampleData(inputBuffer, 0);
-        long firstVideoPTS = mediaExtractor.getSampleTime();
-
-        mediaExtractor.advance();
-        mediaExtractor.readSampleData(inputBuffer, 0);
-        long secondPTS = mediaExtractor.getSampleTime();
-        videoSampleTime = Math.abs(secondPTS - firstVideoPTS);
-
-        Log.d("===>xkc", "videSampleTime is:" + videoSampleTime);
+        // 重新切换此信道，因为上面已经跳过3帧，会造成前面的帧模糊
+        mediaExtractor.unselectTrack(sourceVTrack);
+        mediaExtractor.selectTrack(sourceVTrack);
 
         // 选择起点
         mediaExtractor.seekTo(clipPoint, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
@@ -163,8 +169,8 @@ public class VideoDecoder {
             videoInfo.offset = 0;
             videoInfo.size = sampleSize;
             videoInfo.flags = sampleFlag;
+            videoInfo.presentationTimeUs += videoSampleTime;
             mediaMuxer.writeSampleData(videoTrackIndex, inputBuffer, videoInfo);
-            videoInfo.presentationTimeUs += presentationTimeUs;
 
         }
 
@@ -173,24 +179,30 @@ public class VideoDecoder {
         MediaCodec.BufferInfo audioInfo = new MediaCodec.BufferInfo();
         audioInfo.presentationTimeUs = 0;
         long audioSampleTime;
+        {
 
-        // 获取音频帧时长
-        mediaExtractor.readSampleData(inputBuffer, 0);
+            // 获取音频帧时长
+            mediaExtractor.readSampleData(inputBuffer, 0);
 
-        // 跳过第一个sample
-        if (mediaExtractor.getSampleTime() == 0) {
+            // 跳过第一个sample
+            if (mediaExtractor.getSampleTime() == 0) {
+                mediaExtractor.advance();
+            }
+
+            mediaExtractor.readSampleData(inputBuffer, 0);
+            long firstAudioPTS = mediaExtractor.getSampleTime();
+
             mediaExtractor.advance();
+            mediaExtractor.readSampleData(inputBuffer, 0);
+            long secondAudioPTS = mediaExtractor.getSampleTime();
+
+            audioSampleTime = Math.abs(secondAudioPTS - firstAudioPTS);
+            Log.d("===>xkc", "audioSampleTime is:" + audioSampleTime);
         }
 
-        mediaExtractor.readSampleData(inputBuffer, 0);
-        long firstAudioPTS = mediaExtractor.getSampleTime();
-
-        mediaExtractor.advance();
-        mediaExtractor.readSampleData(inputBuffer, 0);
-        long secondAudioPTS = mediaExtractor.getSampleTime();
-
-        audioSampleTime = Math.abs(secondAudioPTS - firstAudioPTS);
-        Log.d("===>xkc", "audioSampleTime is:" + audioSampleTime);
+        // 重新切换此信道
+        mediaExtractor.unselectTrack(sourceATrack);
+        mediaExtractor.selectTrack(sourceATrack);
 
         mediaExtractor.seekTo(clipPoint, MediaExtractor.SEEK_TO_CLOSEST_SYNC);
         while (true) {
@@ -216,8 +228,8 @@ public class VideoDecoder {
             mediaExtractor.advance();
             audioInfo.offset = 0;
             audioInfo.size = sampleSize;
+            audioInfo.presentationTimeUs += audioSampleTime;
             mediaMuxer.writeSampleData(audioTrackIndex, inputBuffer, audioInfo);
-            audioInfo.presentationTimeUs += presentationTimeUs;
 
         }
 
