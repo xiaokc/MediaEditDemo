@@ -40,6 +40,7 @@ public class VideoDecoder {
             // 创建合成器
             mediaMuxer = new MediaMuxer(url.substring(0, url.lastIndexOf(".")) + "_output.mp4",
                     MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
+            mediaMuxer.setOrientationHint(90);
 
         } catch (IOException e) {
             e.printStackTrace();
