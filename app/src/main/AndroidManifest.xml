@@ -45,6 +45,12 @@
 
         <!--视频剪切-->
         <activity android:name=".videocut.VideoClipActivity">
+
+        </activity>
+
+        <!--视频合并-->
+
+        <activity android:name=".videomerge.VideoMergeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

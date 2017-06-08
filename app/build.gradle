@@ -29,4 +29,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     testCompile 'junit:junit:4.12'
     compile files('libs/glide-full-4.0.0-RC0.jar')
+    compile files('libs/isoparser-1.1.22.jar')
 }
