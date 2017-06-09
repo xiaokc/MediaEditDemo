@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,7 +46,6 @@ public class MediaCodecActivity extends Activity {
         deviceUtil = new DeviceUtil(this);
 
         btnStart = (Button) findViewById(R.id.btn_start);
-        btnStart.setEnabled(false);
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +82,7 @@ public class MediaCodecActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CAPTURE_CODE && resultCode == RESULT_OK) {
-            Log.i("===>xkc","权限获取成功");
+            Log.i("===>xkc", "权限获取成功");
             mediaProjection = mediaProjectionManager.getMediaProjection(resultCode, data);
             mediaCodecService.setMediaProjection(mediaProjection);
             mediaCodecService.startRecord();
@@ -98,14 +98,14 @@ public class MediaCodecActivity extends Activity {
             MediaCodecService.MediaCodecBinder binder = (MediaCodecService.MediaCodecBinder) service;
             mediaCodecService = binder.getMediaCodecService();
             mediaCodecService.setConfig(deviceUtil.getScreenWidth(),
-                    deviceUtil.getScreenHeight(), deviceUtil.getScreenDpi());
-            btnStart.setEnabled(true);
-            btnStart.setText(mediaCodecService.isRunning() ? "停止" : "开始");
+                    deviceUtil.getScreenHeight(), deviceUtil.getScreenDpi(), Environment.getExternalStorageDirectory
+                            () + "/recordmaster/out_recorded.mp4");
+            btnStart.setText(mediaCodecService.isRunning()?"停止":"开始");
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
+            mediaCodecService = null;
         }
     };
 
