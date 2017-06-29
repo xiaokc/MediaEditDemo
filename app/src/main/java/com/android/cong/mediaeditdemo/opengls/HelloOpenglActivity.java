@@ -15,6 +15,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 
 /**
@@ -31,7 +32,7 @@ public class HelloOpenglActivity extends Activity {
         glSurfaceView = (GLSurfaceView) findViewById(R.id.gl_surfaceview);
         glSurfaceView.setEGLContextClientVersion(2);
         glSurfaceView.setRenderer(new MyRenderer());
-        glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+        glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
     private static class MyRenderer implements GLSurfaceView.Renderer {
@@ -50,6 +51,8 @@ public class HelloOpenglActivity extends Activity {
         private final float[] mProjectionMatrix = new float[16]; // 投影矩阵
         private final float[] mCameraMatrix = new float[16]; // 相机矩阵
         private final float[] mMVPMatrix = new float[16];
+        private float[] mRotationMatrix = new float[16]; // 旋转矩阵
+
         private int mProgram;
         private int mPositionHandler;
         private int mMatrixHandler;
@@ -82,7 +85,12 @@ public class HelloOpenglActivity extends Activity {
             float ratio = (float) height / width;
             Matrix.frustumM(mProjectionMatrix, 0, -1, 1, -ratio, ratio, 3, 7);
             Matrix.setLookAtM(mCameraMatrix, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0);
-            Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mCameraMatrix, 0);
+
+            long time = SystemClock.uptimeMillis() % 4000L;
+            float angle = 0.090f * ((int) time);
+            Matrix.setRotateM(mRotationMatrix, 0, angle, 0, 0, -1.0f);
+
+            Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mRotationMatrix, 0);
 
         }
 
@@ -94,6 +102,8 @@ public class HelloOpenglActivity extends Activity {
             GLES20.glVertexAttribPointer(mPositionHandler, 3, GLES20.GL_FLOAT, false, 12, mVertexBuffer);
 
             GLES20.glUniformMatrix4fv(mMatrixHandler, 1, false, mMVPMatrix, 0);
+
+            gl.glRotatef(0f, 0f,1f,0f);
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 3);
             GLES20.glDisableVertexAttribArray(mPositionHandler);

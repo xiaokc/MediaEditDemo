@@ -1,6 +1,9 @@
 package com.android.cong.mediaeditdemo.videomerge;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
@@ -48,16 +51,25 @@ public class VideoMergeActivity extends Activity {
     }
 
     private void initData() {
+        // 视频
         filePathList.add(Environment.getExternalStorageDirectory().getAbsolutePath()
-                +"/recordmaster/VideoEdit/20170601_164328_edited.mp4");
+                + "/recordmaster/VideoEdit/20170602_170924_edited.mp4");
 
         filePathList.add(Environment.getExternalStorageDirectory().getAbsolutePath()
-                +"/recordmaster/VideoEdit/20170601_171122_edited.mp4");
+                + "/recordmaster/VideoEdit/20170602_170924_edited.mp4");
+
+        // 音频
+//        filePathList.add(Environment.getExternalStorageDirectory() + "/romatic.aac");
+//        filePathList.add(Environment.getExternalStorageDirectory() + "/classic.aac");
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testMp4Parser(filePathList);
+                try {
+                    new VideoMerger().mergeVideo(filePathList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -109,13 +121,13 @@ public class VideoMergeActivity extends Activity {
 
         try {
             String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    +"/recordmaster/out_merged.mp4";
+                    + "/recordmaster/out_merged.mp4";
             File file = new File(filePath);
             if (!file.exists()) {
                 file.createNewFile();
             }
 
-            FileChannel fc = new RandomAccessFile(filePath,"rw").getChannel();
+            FileChannel fc = new RandomAccessFile(filePath, "rw").getChannel();
             outContainer.writeContainer(fc);
             fc.close();
         } catch (IOException e) {
@@ -125,5 +137,44 @@ public class VideoMergeActivity extends Activity {
         movies.clear();
     }
 
+    /**
+     * 以文件的形式进行拼接
+     * mp4格式文件
+     * 经测试，发现不行，只有第一个文件正常写入了，后面的无法拼接到第一个文件后面
+     *
+     * aac格式文件，不考虑头文件，直接进行文件拼接，可以
+     * <p>
+     *
+     *
+     * @param filePathList
+     */
+    private void filesMerge(List<String> filePathList) {
+        try {
+            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + "/recordmaster/out_merged.aac";
+            File outFile = new File(filePath);
+            if (!outFile.exists()) {
+                outFile.createNewFile();
+            }
+            FileOutputStream fouts = new FileOutputStream(outFile);
+
+            for (int i = 0; i < filePathList.size(); i++) {
+                File file = new File(filePathList.get(i));
+                FileInputStream fins = new FileInputStream(file);
+                byte[] bytes = new byte[fins.available()];
+
+                while (fins.read(bytes) != -1) {
+                    fouts.write(bytes);
+                }
+
+                fouts.flush();
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

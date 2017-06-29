@@ -109,6 +109,8 @@ public class DecodeActivity extends Activity implements SurfaceHolder.Callback {
                                 isEOS = true;
                             } else {
                                 decoder.queueInputBuffer(inIndex, 0, sampleSize, extractor.getSampleTime(), 0);
+                                Log.i("===>xkc","timestamp:"+extractor.getSampleTime()+",flag:"+extractor
+                                        .getSampleFlags());
                                 extractor.advance();
                             }
 

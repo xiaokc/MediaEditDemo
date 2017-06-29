@@ -10,6 +10,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a","x86"
+        }
     }
     buildTypes {
         release {
@@ -17,6 +21,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
 }
 
 dependencies {
@@ -30,4 +46,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/glide-full-4.0.0-RC0.jar')
     compile files('libs/isoparser-1.1.22.jar')
+    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
 }

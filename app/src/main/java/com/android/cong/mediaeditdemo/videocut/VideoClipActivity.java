@@ -27,7 +27,7 @@ public class VideoClipActivity extends Activity {
         btnClip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new VideoDecoder().decodeVideo(filePath, 0, 5000000);
+                new VideoCliper().decodeVideo(filePath, 0, 5000000);
             }
         });
     }

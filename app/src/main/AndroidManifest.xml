@@ -7,8 +7,17 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    
+    
+    <!--使用OpenGL ES 2.0-->
+    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+    <supports-gl-texture android:name="GL_OES_compressed_ETC1_RGB8_texture"/>
+    <supports-gl-texture android:name="GL_OES_compressed_paletted_texture" />
+
     <application
             android:allowBackup="true"
+            android:name=".audiomux.CommonApplication"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
@@ -51,13 +60,42 @@
         <!--视频合并-->
 
         <activity android:name=".videomerge.VideoMergeActivity">
+
+        </activity>
+
+        <activity android:name=".surfaces.CameraPreviewTextureViewActivity"
+                  android:hardwareAccelerated="true">
+
+        </activity>
+
+
+        <!--使用OpenGL-->
+        <activity android:name=".opengls.HelloOpenglActivity">
+
+        </activity>
+        <activity android:name=".opengls.BitmapTextureActivity">
+
+        </activity>
+
+        <activity android:name=".surfaces.CameraToMp4Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
+        <!--使用GPUImage 进行图片和相机滤镜-->
+        <activity android:name=".gpuimages.activity.GpuImageMainActivity">
+
+        </activity>
+        <activity android:name=".gpuimages.activity.GalleryFilterActivity"/>
+
+        <activity android:name=".gpuimages.activity.CameraFilterActivity"/>
+
+
+        <activity android:name=".audiomux.MuxAudioActivity">
+
+        </activity>
 
     </application>
 
