@@ -35,8 +35,7 @@ public class VideoDecodeEncodeMuxTest {
 
     private LinkedList<MediaCodec.BufferInfo> decodedInfoList = new LinkedList<>();
 
-    private String outFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-            + "/video_editor/out_merged.mp4";
+    private String outFilePath = "/sdcard/2_decode_buffer_encode_mux.mp4";
     private boolean isMuxing = false;
     private int trackIdx = -1;
 
@@ -96,10 +95,13 @@ public class VideoDecodeEncodeMuxTest {
                     break;
                 }
             }
-
-            decoder.stop();
-            decoder.release();
-            extractor.release();
+            if (decoder != null) {
+                decoder.stop();
+                decoder.release();
+            }
+            if (extractor != null) {
+                extractor.release();
+            }
 
             doEncode();
 
@@ -182,10 +184,10 @@ public class VideoDecodeEncodeMuxTest {
 
             }
 
-            //            encoder.release();
-            //            encoder.stop();
-            //            muxer.release();
-            //            muxer.stop();
+            if (muxer != null) {
+                muxer.stop();
+                muxer.release();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
