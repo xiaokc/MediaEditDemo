@@ -112,6 +112,7 @@ public class VideoCliper {
         mediaExtractor.selectTrack(sourceVTrack);
         MediaCodec.BufferInfo videoInfo = new MediaCodec.BufferInfo();
         videoInfo.presentationTimeUs = 0;
+        long lastSamplePTS = 0;
 
         // 计算采样（帧）率
         long videoSampleTime;
@@ -155,6 +156,9 @@ public class VideoCliper {
 
             // 获取时间戳
             long presentationTimeUs = mediaExtractor.getSampleTime();
+            if (lastSamplePTS == 0) {
+                lastSamplePTS = presentationTimeUs;
+            }
             // 获取帧类型，只能识别是否是关键帧
             int sampleFlag = mediaExtractor.getSampleFlags();
             Log.d("===>xkc", "trackIndex=" + trackIndex + ",presentationTimeUs=" + presentationTimeUs + ","
@@ -170,7 +174,8 @@ public class VideoCliper {
             videoInfo.offset = 0;
             videoInfo.size = sampleSize;
             videoInfo.flags = sampleFlag;
-            videoInfo.presentationTimeUs += videoSampleTime;
+//            videoInfo.presentationTimeUs += videoSampleTime;
+            videoInfo.presentationTimeUs = presentationTimeUs - lastSamplePTS;
             mediaMuxer.writeSampleData(videoTrackIndex, inputBuffer, videoInfo);
 
         }
@@ -230,6 +235,7 @@ public class VideoCliper {
             audioInfo.offset = 0;
             audioInfo.size = sampleSize;
             audioInfo.presentationTimeUs += audioSampleTime;
+            audioInfo.presentationTimeUs = presentationTimeUs;
             mediaMuxer.writeSampleData(audioTrackIndex, inputBuffer, audioInfo);
 
         }
