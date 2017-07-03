@@ -1,14 +1,14 @@
 package com.android.cong.mediaeditdemo.audiomux;
 
 
+import com.android.cong.mediaeditdemo.videomux.AndroidUtil;
+
 import android.app.Application;
 import android.os.StrictMode;
 import android.view.Gravity;
 import android.widget.Toast;
 
-/**
- * Created by 郑童宇 on 2016/05/24.
- */
+
 public class CommonApplication extends Application {
     private boolean initialised;
     private boolean initialisedInUiThread;
@@ -34,6 +34,8 @@ public class CommonApplication extends Application {
 
         initialised = false;
         initialisedInUiThread = false;
+
+        AndroidUtil.init(this);
     }
 
     public synchronized void initialise() {
