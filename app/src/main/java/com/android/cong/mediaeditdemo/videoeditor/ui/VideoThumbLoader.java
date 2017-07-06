@@ -48,14 +48,11 @@ public class VideoThumbLoader {
 
     public void loadVideoThumb(String videoPath, ImageView imageView) {
         Log.i("===>xkc", "loadVideoThumb...videoPath:" + videoPath);
-//        if (getVideoThumbFromCache(videoPath) != null) {
-//            imageView.setImageBitmap(getVideoThumbFromCache(videoPath));
-//        } else {
-//            new VideoThumbLoadTask(imageView, videoPath).execute();
-//        }
-
-        new VideoThumbLoadTask(imageView, videoPath).execute();
-
+        if (getVideoThumbFromCache(videoPath) != null) {
+            imageView.setImageBitmap(getVideoThumbFromCache(videoPath));
+        } else {
+            new VideoThumbLoadTask(imageView, videoPath).execute();
+        }
     }
 
     class VideoThumbLoadTask extends AsyncTask<Void, Void, Bitmap> {
