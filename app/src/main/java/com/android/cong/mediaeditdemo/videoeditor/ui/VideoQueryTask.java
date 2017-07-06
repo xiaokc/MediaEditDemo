@@ -33,7 +33,6 @@ public class VideoQueryTask extends AsyncTask<Void, Integer, List<VideoItem>> {
 
     @Override
     protected List<VideoItem> doInBackground(Void... params) {
-        Log.i("===>xkc","doInBackground...");
         List<VideoItem> list = new ArrayList<>();
         final String[] mProjection = new String[] {
                 MediaStore.Video.Media.DATA,
@@ -100,7 +99,6 @@ public class VideoQueryTask extends AsyncTask<Void, Integer, List<VideoItem>> {
         super.onPostExecute(videoItems);
         if (mListener != null) {
             mListener.onDone(videoItems);
-            Log.i("===>xkc","查询完毕");
         }
     }
 
