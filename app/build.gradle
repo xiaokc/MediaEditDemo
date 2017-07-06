@@ -47,4 +47,6 @@ dependencies {
     compile files('libs/glide-full-4.0.0-RC0.jar')
     compile files('libs/isoparser-1.1.22.jar')
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+
+    compile 'com.android.support:design:25.+'
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.android.cong.mediaeditdemo.R;
+import com.android.cong.mediaeditdemo.videomux.VideoConcat;
 import com.coremedia.iso.boxes.Container;
 import com.googlecode.mp4parser.authoring.Movie;
 import com.googlecode.mp4parser.authoring.Track;
@@ -34,6 +35,7 @@ public class VideoMergeActivity extends Activity {
 
     private List<String> filePathList;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,7 @@ public class VideoMergeActivity extends Activity {
         initView();
 
         initData();
+
 
     }
 
@@ -52,11 +55,9 @@ public class VideoMergeActivity extends Activity {
 
     private void initData() {
         // 视频
-        filePathList.add(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + "/recordmaster/VideoEdit/20170602_170924_edited.mp4");
+        filePathList.add("/sdcard/2.mp4");
 
-        filePathList.add(Environment.getExternalStorageDirectory().getAbsolutePath()
-                + "/recordmaster/VideoEdit/20170602_170924_edited.mp4");
+        filePathList.add("/sdcard/2.mp4");
 
         // 音频
 //        filePathList.add(Environment.getExternalStorageDirectory() + "/romatic.aac");
@@ -65,11 +66,25 @@ public class VideoMergeActivity extends Activity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    new VideoMerger().mergeVideo(filePathList);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                VideoConcat videoConcat = new VideoConcat(filePathList,"/sdcard/2_decode_surface_encode_mux.mp4");
+                videoConcat.start(false);
+
+                new Thread(){
+                    @Override
+                    public void run() {
+                        try {
+//                            new VideoMerger().mergeVideo(filePathList);
+//                            new VideoExtractAndMuxTest().videoExtractAndMux(filePathList,"/sdcard/2_extract_mux.mp4");
+//                              new VideoDecodeEncodeMuxTest().test(filePathList.get(0));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }.start();
+//
+
+
             }
         });
     }
@@ -176,5 +191,4 @@ public class VideoMergeActivity extends Activity {
             e.printStackTrace();
         }
     }
-
 }

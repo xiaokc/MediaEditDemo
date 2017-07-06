@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_marginLeft="5dp"
+              android:layout_marginRight="5dp"
+              android:layout_marginTop="10dp"
+              android:layout_marginBottom="10dp"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <ImageView
+            android:id="@+id/iv_edited_thumb"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/format_media"
+
+    />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="5dp"
+    >
+
+        <TextView
+                android:id="@+id/tv_edited_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test.mp4"
+        />
+        <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+            >
+                <TextView
+                        android:id="@+id/tv_size_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="20M today"
+                />
+                <TextView
+                        android:id="@+id/tv_width_height"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="640*480"
+                />
+                <TextView
+                        android:id="@+id/tv_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/icon_left_arrow"
+                        android:text="00:16:7"
+                />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/toolbar_favorites"
+                />
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/toolbar_delete"
+                />
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/toolbar_more"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -8,16 +8,16 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <uses-permission android:name="android.permission.CAMERA"/>
-    
-    
+
+
     <!--使用OpenGL ES 2.0-->
     <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
     <supports-gl-texture android:name="GL_OES_compressed_ETC1_RGB8_texture"/>
-    <supports-gl-texture android:name="GL_OES_compressed_paletted_texture" />
+    <supports-gl-texture android:name="GL_OES_compressed_paletted_texture"/>
 
     <application
             android:allowBackup="true"
-            android:name=".audiomux.CommonApplication"
+            android:name=".videoeditor.activity.BaseApplication"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
@@ -77,13 +77,6 @@
 
         </activity>
 
-        <activity android:name=".surfaces.CameraToMp4Activity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-
         <!--使用GPUImage 进行图片和相机滤镜-->
         <activity android:name=".gpuimages.activity.GpuImageMainActivity">
 
@@ -95,6 +88,15 @@
 
         <activity android:name=".audiomux.MuxAudioActivity">
 
+        </activity>
+
+        <activity
+                android:name=".videoeditor.activity.VideoSelectionActivity"
+                android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
 
     </application>
