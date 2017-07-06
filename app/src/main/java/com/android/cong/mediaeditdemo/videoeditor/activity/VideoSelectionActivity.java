@@ -14,9 +14,12 @@ import com.android.cong.mediaeditdemo.videoeditor.ui.CustomPopWindow;
 import com.android.cong.mediaeditdemo.videoeditor.ui.VideoQueryTask;
 import com.android.cong.mediaeditdemo.videoeditor.utils.VideoQueryManager;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -88,8 +91,24 @@ public class VideoSelectionActivity extends BaseActivity {
                 adapter.setOnItemClickListener(new VideoSelectionGridAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        VideoItem item = videoItems.get(position);
-                        Log.i("===>xkc","item:"+item);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(VideoSelectionActivity.this);
+                        AlertDialog dialog = builder.setMessage("视频过大，需要剪切后编辑")
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Log.i("===>xkc","点击确定");
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Log.i("===>xkc","点击取消");
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+
                     }
                 });
             }

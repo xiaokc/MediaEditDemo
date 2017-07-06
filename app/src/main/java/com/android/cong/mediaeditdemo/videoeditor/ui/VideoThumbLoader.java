@@ -47,7 +47,6 @@ public class VideoThumbLoader {
     }
 
     public void loadVideoThumb(String videoPath, ImageView imageView) {
-        Log.i("===>xkc", "loadVideoThumb...videoPath:" + videoPath);
         if (getVideoThumbFromCache(videoPath) != null) {
             imageView.setImageBitmap(getVideoThumbFromCache(videoPath));
         } else {
